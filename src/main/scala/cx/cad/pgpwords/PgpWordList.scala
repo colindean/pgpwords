@@ -1,10 +1,8 @@
 package cx.cad.pgpwords
 
-import cx.cad.pgpwords.PgpWords.WordList
+object PgpWordList extends WordListSource {
 
-object DefaultPairs {
-
-  def tuplesToPairSeq(pairSet: Seq[(String, String)]): WordList = {
+  def tuplesToPairSeq(pairSet: Seq[(String, String)]): Map[Byte, Pair] = {
     pairSet.zipWithIndex.map {
       case (pair, index) =>
         pair match {
@@ -13,7 +11,7 @@ object DefaultPairs {
     }.toMap
   }
 
-  def apply: WordList = pairs
+  def apply: WordList = WordList(pairs, reversePairs)
 
   val tuples = IndexedSeq(
     ("aardvark", "adroitness"), // 00
@@ -274,7 +272,9 @@ object DefaultPairs {
     ("Zulu", "Yucatan") // FF
   )
 
-  val pairs: WordList = tuplesToPairSeq(tuples)
+  val pairs: Map[Byte, Pair] = tuplesToPairSeq(tuples)
 
+  val reversePairs: Map[String, Byte] = pairs.flatMap{ case(index, pair) => Map(pair.even -> index, pair.odd -> index) }
 
-  }
+}
+
