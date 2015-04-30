@@ -8,36 +8,42 @@ class PgpWordsSpec extends WordSpec with ShouldMatchers with EncodingMatchers {
   val referenceBytesString = "E582 94F2 E9A2 2748 6E8B 061B 31CC 528F D7FA 3F19"
   val referenceWords = "topmost Istanbul Pluto vagabond treadmill Pacific brackish dictator goldfish Medusa afflict bravado chatter revolver Dupont midsummer stopwatch whimsical cowbell bottomless"
 
-  "PgpWords" can {
+  "PgpWords" when {
+    "encoding" can {
+      "encode one byte from numbers" in {
+        PgpWords.encode(Array(255.toByte)) should be("Zulu")
+      }
 
-    "Encode one byte with numbers" in {
-      PgpWords.encode(Array(255.toByte)) should be("Zulu")
+      "encode two bytes from numbers" in {
+        PgpWords.encode(Array(255.toByte, 0.toByte)) should be("Zulu adroitness")
+      }
+
+      "encode one byte" in {
+        "FF" should beEncodedTo("Zulu")
+      }
+
+      "encode two bytes without not duplication" in {
+        "FFFF" should beEncodedTo("Zulu Yucatan")
+      }
+
+      "encode simple bytes" in {
+        "E582" should beEncodedTo("topmost Istanbul")
+      }
+
+      "encode reference bytes" in {
+        referenceBytesString should beEncodedTo(referenceWords)
+      }
     }
 
-    "Encode one byte" in {
-      "FF" should beEncodedTo("Zulu")
-    }
+    "decoding" can {
+      "decode simple bytes" in {
+        "miser travesty" should beDecodedTo("82E5")
+      }
 
-    "Encode two bytes without not duplication" in {
-      "FFFF" should beEncodedTo("Zulu Yucatan")
+      "decode reference bytes" in {
+        referenceWords should beDecodedTo(referenceBytesString)
+      }
     }
-
-    "Encode simple bytes" in {
-      "E582" should beEncodedTo("topmost Istanbul")
-    }
-
-    "Encode reference bytes" in {
-      referenceBytesString should beEncodedTo(referenceWords)
-    }
-
-    "Decode simple bytes" in {
-      "miser travesty" should beDecodedTo("82E5")
-    }
-
-    "Decode reference bytes" in {
-      referenceWords should beDecodedTo(referenceBytesString)
-    }
-
   }
 }
 
