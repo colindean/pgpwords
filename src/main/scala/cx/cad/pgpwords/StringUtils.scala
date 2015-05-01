@@ -7,4 +7,8 @@ object StringUtils {
   def byteStringToByteArray(byteString: String): Array[Byte] = {
     removeSpaces(byteString).grouped(2).map { Integer.parseInt(_, 16).toByte }.toArray
   }
+
+  def byteArrayToByteString(byteArray: Array[Byte]): String = {
+    byteArray.map("%X".format(_)).mkString
+  }
 }

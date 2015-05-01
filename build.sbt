@@ -15,7 +15,7 @@ scalacOptions ++= Seq(
   "-Xlint",
   "-Yno-adapted-args",
   "-Ywarn-numeric-widen",
-  "-Ywarn-value-discard",
+  //"-Ywarn-value-discard", // removed until I can figure out how to make scalatest traits not throw warnings
   "-Xfuture"
 )
 
