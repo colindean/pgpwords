@@ -49,17 +49,11 @@ class PgpWordsSpec extends WordSpec with ShouldMatchers with EncodingMatchers {
 
 trait EncodingMatchers extends ShouldMatchers {
 
-  def removeSpaces(withSpaces: String) = withSpaces.replace(" ", "")
-
-  def byteStringToByteArray(byteString: String): Array[Byte] = {
-    removeSpaces(byteString).grouped(2).map { Integer.parseInt(_, 16).toByte }.toArray
-  }
-
   def beEncodedTo(expectedEncoded: String) = {
     Matcher { (byteString: String) =>
       MatchResult(
-        PgpWords.encode(byteStringToByteArray(byteString)) == expectedEncoded,
-        s"[$byteString] did not encode to [$expectedEncoded] but was ${PgpWords.encode(byteStringToByteArray(byteString))}",
+        PgpWords.encode(StringUtils.byteStringToByteArray(byteString)) == expectedEncoded,
+        s"[$byteString] did not encode to [$expectedEncoded] but was ${PgpWords.encode(StringUtils.byteStringToByteArray(byteString))}",
         s"[$byteString] encoded to [$expectedEncoded]"
       )
     }
@@ -68,8 +62,8 @@ trait EncodingMatchers extends ShouldMatchers {
   def beDecodedTo(byteString: String) = {
     Matcher { (encoded: String) =>
       MatchResult(
-        byteStringToByteArray(byteString).toList == PgpWords.decode(encoded).toList,
-        s"[$encoded] did not decode to [$byteString] but was ${PgpWords.decode(encoded).toList} and should have been ${byteStringToByteArray(byteString).toList}",
+        StringUtils.byteStringToByteArray(byteString).toList == PgpWords.decode(encoded).toList,
+        s"[$encoded] did not decode to [$byteString] but was ${PgpWords.decode(encoded).toList} and should have been ${StringUtils.byteStringToByteArray(byteString).toList}",
         s"[$encoded] decoded to [$byteString]"
       )
     }
