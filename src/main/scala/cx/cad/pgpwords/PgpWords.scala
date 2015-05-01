@@ -27,13 +27,7 @@ class PgpWordsConverter(wordList: WordList) {
   }
 }
 
-case class Pair(even: String, odd: String)
 
 sealed trait Position
-case object Even extends Position
-case object Odd extends Position
-
-trait WordListSource {
-  def apply: WordList
-}
-case class WordList(pairs: Map[Byte, Pair], reverse: Map[String, Byte])
+private case object Even extends Position
+private case object Odd extends Position
