@@ -2,8 +2,8 @@ package cx.cad.pgpwords
 
 import org.scalatest.{ShouldMatchers, WordSpec}
 
-class DefaultPairsSpec extends WordSpec with ShouldMatchers {
-  "DefaultPairs" should {
+class PgpWordListSpec extends WordSpec with ShouldMatchers {
+  "PgpWordListSource" should {
     "have 256 elements" in {
       PgpWordList.pairs should have size(256)
     }
